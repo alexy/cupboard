@@ -191,10 +191,10 @@
 (def-unmarshal-read :map
   (fn [tuple-input]
     (let [len (unmarshal-read tuple-input)]
-      (loop [i 0 res (hash-map)]
+      (loop [i 0 res (transient (hash-map))]
         (if (>= i len)
-            res
-            (recur (inc i) (assoc res
+            (persistent! res)
+            (recur (inc i) (assoc! res
                              (unmarshal-read tuple-input)
                              (unmarshal-read tuple-input))))))))
 
